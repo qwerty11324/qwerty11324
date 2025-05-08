@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Элементы интерфейса
-    const connectWalletBtn = document.getElementById('connect-wallet');
-    const userInfo = document.getElementById('user-info');
+     const connectWalletBtn = document.getElementById('connect-wallet');
+    const userInfo = document.getElementById('user-info')
     const betModal = document.getElementById('bet-modal');
     const closeBtn = document.querySelector('.close-btn');
     const predictionCards = document.querySelectorAll('.prediction-card');
@@ -18,32 +18,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Загрузка данных пользователя из Telegram (ИСПРАВЛЕННАЯ ФУНКЦИЯ)
     function initUser() {
-        // Проверяем, что находимся в Telegram WebApp и есть данные пользователя
-        if (tg?.initDataUnsafe?.user) {
-            const user = tg.initDataUnsafe.user;
-            let userName = "Гость"; // значение по умолчанию
+        // 1. Проверяем, что мы в Telegram WebApp
+        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+            const tg = Telegram.WebApp;
             
-            // Приоритет: username (если есть)
-            if (user.username) {
-                userName = `@${user.username}`;
-            } 
-            // Запасной вариант: first_name + last_name
-            else if (user.first_name) {
-                userName = user.first_name;
-                if (user.last_name) {
-                    userName += ` ${user.last_name}`;
+            // 2. Пытаемся получить данные пользователя разными способами
+            let user = null;
+            
+            // Способ 1: initDataUnsafe (основной)
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                user = tg.initDataUnsafe.user;
+            }
+            // Способ 2: Через WebApp.initData (если первый не сработал)
+            else if (tg.initData) {
+                try {
+                    const initData = new URLSearchParams(tg.initData);
+                    const userJson = initData.get('user');
+                    if (userJson) user = JSON.parse(userJson);
+                } catch (e) {
+                    console.error('Error parsing initData:', e);
                 }
             }
             
-            // Обновляем интерфейс (только текст, без аватара)
-            userInfo.innerHTML = `<span class="username">${userName}</span>`;
-            return;
+            // 3. Если нашли данные пользователя
+            if (user) {
+                let userName = "Гость";
+                
+                // Приоритет 1: username с @
+                if (user.username) {
+                    userName = `@${user.username}`;
+                } 
+                // Приоритет 2: Имя + Фамилия
+                else if (user.first_name) {
+                    userName = user.first_name;
+                    if (user.last_name) {
+                        userName += ` ${user.last_name}`;
+                    }
+                }
+                
+                userInfo.innerHTML = `<span class="username">${userName}</span>`;
+                return;
+            }
         }
         
-        // Fallback (если не в Telegram WebView или нет данных)
+        // 4. Если ничего не сработало
         userInfo.innerHTML = '<span class="username">Гость</span>';
+        
+        // 5. Для отладки (можно удалить в продакшене)
+        console.log('Telegram WebApp data:', window.Telegram?.WebApp);
+        console.log('InitDataUnsafe:', window.Telegram?.WebApp?.initDataUnsafe);
     }
-
     // Фильтрация карточек
     function filterByCategory(category) {
         predictionCards.forEach(card => {
