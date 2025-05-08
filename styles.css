@@ -1,0 +1,345 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #121212;
+}
+
+.dark-theme {
+    --bg-color: #1e1e1e;
+    --card-color: #2d2d2d;
+    --text-color: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --primary-color: #bb86fc;
+    --primary-dark: #3700b3;
+    --error-color: #cf6679;
+    --border-color: #3d3d3d;
+}
+
+.app-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    color: var(--text-color);
+    background-color: black;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #00BFFF;
+    border-radius: 0px 0px 20px 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.username {
+    font-weight: 500;
+}
+
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: black;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.connect-wallet-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: #0096D0;
+
+    display: flex;
+    align-items: center;
+}
+
+.connect-wallet-btn:hover {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+.main-nav {
+    display: flex;
+    
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #202020;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.nav-item {
+    padding: 12px 15px;
+    font-weight: 500;
+    cursor: pointer;
+    color: white;
+    position: relative;
+}
+
+.nav-item.active {
+    color: white;
+}
+
+
+
+.sub-nav {
+    display: flex;
+    padding: 10px 15px;
+    background-color: #202020;
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.sub-nav-item {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #1c1c1c;
+    color: #00BFFF;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    font-weight: bold;
+    box-shadow: 10px 5px 5px black;
+}
+
+.sub-nav-item.active {
+    background-color: #1c1c1c;
+    color: #00BFFF;
+}
+
+.content-area {
+    padding: 15px;
+    background-color: #202020;
+    height: 80vh;
+}
+
+.prediction-card {
+    background-color: #202020;
+    margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid #ffffff;
+    
+}
+
+.prediction-card:hover {
+    transform: translateY(-2px);
+}
+
+.coin-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.coin-name {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.coin-alias {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-left: 5px;
+}
+
+.prediction-text {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-color);
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #2020209f;
+    border: 1px solid #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.modal-content h3 {
+    margin-bottom: 15px;
+    color: #00f3ff;
+}
+
+.bet-info p {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.bet-options {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.bet-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.bet-btn.above {
+    background-color: #4caf50;
+    color: white;
+}
+
+.bet-btn.below {
+    background-color: #f44336;
+    color: white;
+}
+
+.bet-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bet-amount input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.error-msg {
+    color: var(--error-color);
+    font-size: 13px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+
+
+
+
+.market-card {
+    background-color: #1a1a1a;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid #333;
+  }
+
+  .market-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    align-items: flex-start;
+    font-weight: bold;
+  }
+
+  .market-details {
+    flex: 1;
+  }
+
+  .market-details h3 {
+    margin: 0;
+  }
+
+  .tags {
+    display: flex;
+    gap: 10px;
+    margin: 5px 0;
+  }
+
+  .tag {
+    background-color: black;
+    color: #00aaff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+
+  .market-desc {
+    font-size: 14px;
+  }
+  .logo_mem{
+    max-width: 50px;
+    border-radius: 8px;
+  }
+  .heart{
+    color: white;
+    font-weight: bold;
+    background-color: black;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .img_ton{
+    margin-right: 5px;
+    max-width: 10px;
+  }

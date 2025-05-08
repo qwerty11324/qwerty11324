@@ -1,7 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta http-equiv="refresh" content="0; url=http://185.193.125.85" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Cap Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
 </head>
-<body></body>
+<body>
+    <div class="app-container dark-theme">
+        <header class="app-header">
+            <div class="user-info" id="user-info">
+                <div class="loading-spinner"></div>
+            </div>
+            <button class="connect-wallet-btn" id="connect-wallet">
+                <img src="ton.png" class="img_ton">
+                <div>Connect Wallet</div>
+            </button>
+        </header>
+
+        <nav class="main-nav">
+            <div class="nav-item active" data-section="market">MARKET</div>
+            
+        </nav>
+
+        <div class="sub-nav">
+            <div class="sub-nav-item active" data-category="all">ALL Crypto</div>
+            <div class="sub-nav-item" data-category="blum">BLUM Tokens</div>
+            <div class="sub-nav-item" data-category="dex">DEX Pairs</div>
+        </div>
+
+        <main class="content-area">
+            <!-- BLUM Tokens only -->
+            <div class="prediction-card blum" data-coin="VIO" data-target="500 000" data-date="17.05.2025, 00:00:00">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="v10.webp">
+                </div>
+                <div class="market-details">
+                    <h3>V10</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                        
+                    </div>
+                    <div class="market-desc">Достигнет ли V10 рыночную капитализацию (НИЖЕ) 500 000$ к моменту на (12.05.2025, 00:00:00)</div>
+                </div>
+                
+            </div>
+        
+            <!-- DEX Pairs (FPIBANK and GRAM) -->
+            <div class="prediction-card dex" data-coin="FPIBANK" data-target="4 000 000" data-date="07.05.2025, 00:00:00">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="fpi.png">
+                </div>
+                <div class="market-details">
+                    <h3>FPIBANK</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                    </div>
+                    <div class="market-desc">Достигнет ли FPIBANK рыночную капитализацию (НИЖЕ) 4 000 000$ к моменту на (9.05.2025, 00:00:00)</div>
+                </div>
+               
+            </div>
+        
+            <div class="prediction-card dex" data-coin="GRAM" data-target="9 000 000" data-date="18.05.2025, 13:47:39">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="gram.jpg">
+                </div>
+                <div class="market-details">
+                    <h3>GRAM</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                    </div>
+                    <div class="market-desc">Достигнет ли Gram рыночную капитализацию (НИЖЕ) 9 000 000$ к моменту на (09.05.2025, 00:00:00)</div>
+                </div>
+            </div>
+        
+            <!-- ALL Crypto (FPIBANK only) -->
+            <div class="prediction-card dex" data-coin="DD" data-target="400 000" data-date="18.05.2025, 13:47:39">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="dd.jpg">
+                </div>
+                <div class="market-details">
+                    <h3>DD</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                    </div>
+                    <div class="market-desc">Достигнет ли DD рыночную капитализацию (НИЖЕ) 400 000$ к моменту на (09.05.2025, 00:00:00)</div>
+                </div>
+            </div>
+            <div class="prediction-card dex" data-coin="TSH" data-target="650 000" data-date="18.05.2025, 13:47:39">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="tshk.webp">
+                </div>
+                <div class="market-details">
+                    <h3>Toshka</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                    </div>
+                    <div class="market-desc">Достигнет ли Toshka рыночную капитализацию (НИЖЕ) 650 000$ к моменту на (09.05.2025, 00:00:00)</div>
+                </div>
+            </div>
+            <div class="prediction-card dex" data-coin="CTONS" data-target="500 000" data-date="18.05.2025, 13:47:39">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="ctons.webp">
+                </div>
+                <div class="market-details">
+                    <h3>Ctons</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                    </div>
+                    <div class="market-desc">Достигнет ли CTONS рыночную капитализацию (НИЖЕ) 500 000$ к моменту на (10.05.2025, 00:00:00)</div>
+                </div>
+            </div>
+            <div class="prediction-card dex" data-coin="ETR" data-target="40 000" data-date="18.05.2025, 13:47:39">
+                <div class="market-icon" style="background-color: #a8ff00;">
+                    <img class="logo_mem" src="etr.webp">
+                </div>
+                <div class="market-details">
+                    <h3>ETR</h3>
+                    <div class="tags">
+                        <div class="sub-nav-item">BLUM Tokens</div>
+                        <div class="sub-nav-item">DEX Pairs</div>
+                    </div>
+                    <div class="market-desc">Достигнет ли ETR рыночную капитализацию (НИЖЕ) 40 000$ к моменту на (10.05.2025, 00:00:00)</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Модальное окно ставки -->
+        <div class="modal" id="bet-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3>Сделать ставку</h3>
+                <div class="bet-info">
+                    <p><strong>Монета:</strong> <span id="bet-coin"></span></p>
+                    <p><strong>Цель:</strong> <span id="bet-target"></span></p>
+                    <p><strong>Дата:</strong> <span id="bet-date"></span></p>
+                </div>
+                <div class="bet-options">
+                    <button class="bet-btn above" data-direction="above">ВЫШЕ <span id="target-above"></span></button>
+                    <button class="bet-btn below" data-direction="below">НИЖЕ <span id="target-below"></span></button>
+                </div>
+                <div class="bet-amount">
+                    <input type="number" id="bet-amount" placeholder="Сумма ставки (SIRIUS)">
+                    <p class="error-msg">Для ставок необходимо подключить кошелек и пополнить баланс</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
