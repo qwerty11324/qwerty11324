@@ -55,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Проверка видимости карточки
     function checkCardVisibility(coin, section, category) {
-        if (category === 'blum') return coin === 'VIO' && section === 'pm';
+        if (category === 'blum') {
+            return true;}
         if (category === 'dex') {
             if (section === 'fpibank') return coin === 'FPIBANK';
             if (section === 'gram') return coin === 'GRAM';
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('bet-coin').textContent = this.getAttribute('data-coin');
             document.getElementById('bet-target').textContent = `${this.getAttribute('data-target')}$`;
             document.getElementById('bet-date').textContent = this.getAttribute('data-date');
+            document.getElementById('bet-ca').textContent = this.getAttribute('bet-ca');
             betModal.style.display = 'flex';
         });
     });
