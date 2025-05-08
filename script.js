@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Проверяем, что находимся в Telegram WebApp и есть данные пользователя
         if (tg?.initDataUnsafe?.user) {
             const user = tg.initDataUnsafe.user;
-            let userName = "Гость"; // значение по умолчанию
+            let userName = "Sirius"; // значение по умолчанию
             
             // Приоритет: username (если есть)
             if (user.username) {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Fallback (если не в Telegram WebView или нет данных)
-        userInfo.innerHTML = '<span class="username">Гость</span>';
+        userInfo.innerHTML = '<span class="username">Sirius</span>';
     }
 
     // Фильтрация карточек
