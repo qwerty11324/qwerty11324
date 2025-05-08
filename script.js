@@ -16,27 +16,32 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSection = 'market';
     let currentCategory = 'all';
 
-    // Загрузка данных пользователя из Telegram
+    // Загрузка данных пользователя из Telegram (ИСПРАВЛЕННАЯ ФУНКЦИЯ)
     function initUser() {
-        if (tg) {
-            const user = tg.initDataUnsafe?.user;
-            if (user) {
-                const userName = user.username || `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}`;
-                const avatarUrl = user.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name)}&background=bb86fc&color=fff`;
-                
-                userInfo.innerHTML = `
-                    <img class="user-avatar" src="${avatarUrl}" alt="Ava">
-                    <span class="username">${userName}</span>
-                `;
-                return;
+        // Проверяем, что находимся в Telegram WebApp и есть данные пользователя
+        if (tg?.initDataUnsafe?.user) {
+            const user = tg.initDataUnsafe.user;
+            let userName = "Гость"; // значение по умолчанию
+            
+            // Приоритет: username (если есть)
+            if (user.username) {
+                userName = `@${user.username}`;
+            } 
+            // Запасной вариант: first_name + last_name
+            else if (user.first_name) {
+                userName = user.first_name;
+                if (user.last_name) {
+                    userName += ` ${user.last_name}`;
+                }
             }
+            
+            // Обновляем интерфейс (только текст, без аватара)
+            userInfo.innerHTML = `<span class="username">${userName}</span>`;
+            return;
         }
         
-        // Fallback (если не в Telegram WebView)
-        userInfo.innerHTML = `
-            <img class="user-avatar" src="https://via.placeholder.com/32" alt="Ava">
-            <span class="username">Гость</span>
-        `;
+        // Fallback (если не в Telegram WebView или нет данных)
+        userInfo.innerHTML = '<span class="username">Гость</span>';
     }
 
     // Фильтрация карточек
