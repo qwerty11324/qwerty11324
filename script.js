@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Элементы интерфейса
-     const connectWalletBtn = document.getElementById('connect-wallet');
-    const userInfo = document.getElementById('user-info')
+    const connectWalletBtn = document.getElementById('connect-wallet');
+    const userInfo = document.getElementById('user-info');
     const betModal = document.getElementById('bet-modal');
     const closeBtn = document.querySelector('.close-btn');
     const predictionCards = document.querySelectorAll('.prediction-card');
@@ -17,85 +17,33 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCategory = 'all';
 
     // Загрузка данных пользователя из Telegram (ИСПРАВЛЕННАЯ ФУНКЦИЯ)
-   function initUser() {
-    // 1. Проверяем, что мы точно в Telegram WebApp
-    if (!window.Telegram?.WebApp) {
-        console.log("Not in Telegram WebApp");
+    function initUser() {
+        // Проверяем, что находимся в Telegram WebApp и есть данные пользователя
+        if (tg?.initDataUnsafe?.user) {
+            const user = tg.initDataUnsafe.user;
+            let userName = "Гость"; // значение по умолчанию
+            
+            // Приоритет: username (если есть)
+            if (user.username) {
+                userName = `@${user.username}`;
+            } 
+            // Запасной вариант: first_name + last_name
+            else if (user.first_name) {
+                userName = user.first_name;
+                if (user.last_name) {
+                    userName += ` ${user.last_name}`;
+                }
+            }
+            
+            // Обновляем интерфейс (только текст, без аватара)
+            userInfo.innerHTML = `<span class="username">${userName}</span>`;
+            return;
+        }
+        
+        // Fallback (если не в Telegram WebView или нет данных)
         userInfo.innerHTML = '<span class="username">Гость</span>';
-        return;
     }
 
-    const tg = window.Telegram.WebApp;
-    
-    // 2. Включаем расширенную информацию о пользователе
-    tg.expand();
-    tg.enableClosingConfirmation();
-    
-    // 3. Пробуем все возможные способы получить username
-    let username = null;
-    
-    // Способ 1: Через initDataUnsafe
-    if (tg.initDataUnsafe?.user?.username) {
-        username = tg.initDataUnsafe.user.username;
-    } 
-    // Способ 2: Через parseInitData (для старых версий)
-    else if (tg.initData) {
-        const initData = new URLSearchParams(tg.initData);
-        const userStr = initData.get('user');
-        if (userStr) {
-            try {
-                const user = JSON.parse(userStr);
-                if (user.username) username = user.username;
-            } catch (e) {
-                console.error("Parse error:", e);
-            }
-        }
-    }
-    
-    // 4. Если username нашли
-    if (username) {
-        userInfo.innerHTML = `<span class="username">@${username}</span>`;
-        console.log("User found:", username);
-        return;
-    }
-    
-    // 5. Если username нет, но есть first_name
-    if (tg.initDataUnsafe?.user?.first_name) {
-        const user = tg.initDataUnsafe.user;
-        const name = user.first_name + (user.last_name ? ` ${user.last_name}` : '');
-        userInfo.innerHTML = `<span class="username">${name}</span>`;
-        console.log("User has no username, but has name:", name);
-        return;
-    }
-    
-    // 6. Если ничего не нашли
-    console.log("No user data found in:", {
-        initData: tg.initData,
-        initDataUnsafe: tg.initDataUnsafe,
-        WebAppUser: tg.WebAppUser
-    });
-    
-    userInfo.innerHTML = '<span class="username">Гость</span>';
-    
-    // 7. Дополнительная проверка через 1 секунду (на случай поздней инициализации)
-    setTimeout(() => {
-        if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-            const lateUser = window.Telegram.WebApp.initDataUnsafe.user;
-            if (lateUser.username) {
-                userInfo.innerHTML = `<span class="username">@${lateUser.username}</span>`;
-                console.log("Late user data loaded:", lateUser.username);
-            }
-        }
-    }, 1000);
-}
-        
-        // 4. Если ничего не сработало
-        userInfo.innerHTML = '<span class="username">Гость</span>';
-        
-        // 5. Для отладки (можно удалить в продакшене)
-        console.log('Telegram WebApp data:', window.Telegram?.WebApp);
-        console.log('InitDataUnsafe:', window.Telegram?.WebApp?.initDataUnsafe);
-    }
     // Фильтрация карточек
     function filterByCategory(category) {
         predictionCards.forEach(card => {
