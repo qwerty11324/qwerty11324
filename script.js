@@ -17,49 +17,77 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCategory = 'all';
 
     // Загрузка данных пользователя из Telegram (ИСПРАВЛЕННАЯ ФУНКЦИЯ)
-    function initUser() {
-        // 1. Проверяем, что мы в Telegram WebApp
-        if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            const tg = Telegram.WebApp;
-            
-            // 2. Пытаемся получить данные пользователя разными способами
-            let user = null;
-            
-            // Способ 1: initDataUnsafe (основной)
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                user = tg.initDataUnsafe.user;
-            }
-            // Способ 2: Через WebApp.initData (если первый не сработал)
-            else if (tg.initData) {
-                try {
-                    const initData = new URLSearchParams(tg.initData);
-                    const userJson = initData.get('user');
-                    if (userJson) user = JSON.parse(userJson);
-                } catch (e) {
-                    console.error('Error parsing initData:', e);
-                }
-            }
-            
-            // 3. Если нашли данные пользователя
-            if (user) {
-                let userName = "Гость";
-                
-                // Приоритет 1: username с @
-                if (user.username) {
-                    userName = `@${user.username}`;
-                } 
-                // Приоритет 2: Имя + Фамилия
-                else if (user.first_name) {
-                    userName = user.first_name;
-                    if (user.last_name) {
-                        userName += ` ${user.last_name}`;
-                    }
-                }
-                
-                userInfo.innerHTML = `<span class="username">${userName}</span>`;
-                return;
+   function initUser() {
+    // 1. Проверяем, что мы точно в Telegram WebApp
+    if (!window.Telegram?.WebApp) {
+        console.log("Not in Telegram WebApp");
+        userInfo.innerHTML = '<span class="username">Гость</span>';
+        return;
+    }
+
+    const tg = window.Telegram.WebApp;
+    
+    // 2. Включаем расширенную информацию о пользователе
+    tg.expand();
+    tg.enableClosingConfirmation();
+    
+    // 3. Пробуем все возможные способы получить username
+    let username = null;
+    
+    // Способ 1: Через initDataUnsafe
+    if (tg.initDataUnsafe?.user?.username) {
+        username = tg.initDataUnsafe.user.username;
+    } 
+    // Способ 2: Через parseInitData (для старых версий)
+    else if (tg.initData) {
+        const initData = new URLSearchParams(tg.initData);
+        const userStr = initData.get('user');
+        if (userStr) {
+            try {
+                const user = JSON.parse(userStr);
+                if (user.username) username = user.username;
+            } catch (e) {
+                console.error("Parse error:", e);
             }
         }
+    }
+    
+    // 4. Если username нашли
+    if (username) {
+        userInfo.innerHTML = `<span class="username">@${username}</span>`;
+        console.log("User found:", username);
+        return;
+    }
+    
+    // 5. Если username нет, но есть first_name
+    if (tg.initDataUnsafe?.user?.first_name) {
+        const user = tg.initDataUnsafe.user;
+        const name = user.first_name + (user.last_name ? ` ${user.last_name}` : '');
+        userInfo.innerHTML = `<span class="username">${name}</span>`;
+        console.log("User has no username, but has name:", name);
+        return;
+    }
+    
+    // 6. Если ничего не нашли
+    console.log("No user data found in:", {
+        initData: tg.initData,
+        initDataUnsafe: tg.initDataUnsafe,
+        WebAppUser: tg.WebAppUser
+    });
+    
+    userInfo.innerHTML = '<span class="username">Гость</span>';
+    
+    // 7. Дополнительная проверка через 1 секунду (на случай поздней инициализации)
+    setTimeout(() => {
+        if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+            const lateUser = window.Telegram.WebApp.initDataUnsafe.user;
+            if (lateUser.username) {
+                userInfo.innerHTML = `<span class="username">@${lateUser.username}</span>`;
+                console.log("Late user data loaded:", lateUser.username);
+            }
+        }
+    }, 1000);
+}
         
         // 4. Если ничего не сработало
         userInfo.innerHTML = '<span class="username">Гость</span>';
